@@ -23,6 +23,10 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "noPropertyAccessFromIndexSignature": false,
+    
+    // Add type definitions for @tscircuit/core
+    "types": ["@tscircuit/core"]
+  },
+  "include": ["lib/**/*", "tests/**/*"]
 }

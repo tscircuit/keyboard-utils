@@ -3,10 +3,18 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsup-node ./lib/index.ts --format esm --dts --sourcemap"
+    "build": "tsup-node ./lib/index.ts --format esm --dts --sourcemap",
+    "test": "bun test --preload ./tests/setup.ts",
+    "prepack": "bun run build"
   },
   "devDependencies": {
+    "@tscircuit/core": "^0.0.360",
     "@types/bun": "latest",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "bun-types": "latest",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tsup": "^8.4.0"
   },
   "peerDependencies": {

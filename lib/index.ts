@@ -1,2 +1,3 @@
 export * from "./KLELayout"
-export * from "./..."
+export * from "./KeyMatrix"
+export * from "./getRefDesForKey"

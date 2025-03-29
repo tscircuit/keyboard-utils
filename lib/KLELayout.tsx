@@ -1,6 +1,6 @@
 // Define the types for keyboard-layout-editor.com JSON format
 
-import { getRefDesForKey } from "lib/getRefDesForKey"
+import { getRefDesForKey } from "./getRefDesForKey"
 
 export type KLEKey =
   | string

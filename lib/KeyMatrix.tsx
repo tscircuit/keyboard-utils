@@ -1,6 +1,8 @@
-import { Key } from "@tsci/seveibar.Key"
-import { KLELayout, parseKLELayout } from "./KLELayout"
-import { A_1N4148WS } from "imports/A1N4148WS"
+import React from 'react';
+import { parseKLELayout } from "./KLELayout";
+import type { KLELayout } from "./KLELayout";
+import { Key } from "@tsci/seveibar.Key";
+import { A_1N4148WS } from "imports/A1N4148WS";
 
 interface KeyMatrixProps {
   layout: KLELayout
