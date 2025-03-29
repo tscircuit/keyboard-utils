@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "keyboard-utils",
+      "dependencies": {
+        "@tsci/seveibar.Key": "^0.0.1",
+      },
       "devDependencies": {
         "@tscircuit/core": "^0.0.360",
         "@types/bun": "latest",
@@ -124,6 +127,8 @@
     "@rollup/rollup-win32-ia32-msvc": ["@rollup/rollup-win32-ia32-msvc@4.37.0", "", { "os": "win32", "cpu": "ia32" }, "sha512-e3/1SFm1OjefWICB2Ucstg2dxYDkDTZGDYgwufcbsxTHyqQps1UQf33dFEChBNmeSsTOyrjw2JJq0zbG5GF6RA=="],
 
     "@rollup/rollup-win32-x64-msvc": ["@rollup/rollup-win32-x64-msvc@4.37.0", "", { "os": "win32", "cpu": "x64" }, "sha512-LWbXUBwn/bcLx2sSsqy7pK5o+Nr+VCoRoAohfJ5C/aBio9nfJmGQqHAhU6pwxV/RmyTk5AqdySma7uwWGlmeuA=="],
+
+    "@tsci/seveibar.Key": ["@tsci/seveibar.Key@0.0.1", "https://registry-api.tscircuit.com/package_files/download?package_file_id=4e137868-9442-4300-973e-5850c28a6f5c", {}, "sha512-lMXCm52sJgPEeDuLKOmqrjOnCA50GRkc2M/YSO/2KlJdnWybbEgsQtcQup/K0C/pouVK0kKoxmTSF+OwwdnkAg=="],
 
     "@tscircuit/capacity-autorouter": ["@tscircuit/capacity-autorouter@0.0.44", "", { "peerDependencies": { "typescript": "^5.7.3" } }, "sha512-goSarNo4khFeworI0rLGYKBGMnXF6UDSeO53DjbNvoo9Fxbt8827+a1iET17d1LiTXAltXdJrA9g6Zb0X4VQTA=="],
 
