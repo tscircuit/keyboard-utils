@@ -1,12 +1,7 @@
 {
-  "name": "@tscircuit/keyboard-utils",
-  "main": "dist/index.js",
+  "name": "@tsci/seveibar.keyboard-utils",
   "type": "module",
-  "scripts": {
-    "build": "tsup-node ./lib/index.ts --format esm --dts --sourcemap",
-    "test": "bun test --preload ./tests/setup.ts",
-    "prepack": "bun run build"
-  },
+  "scripts": {},
   "devDependencies": {
     "@tscircuit/core": "^0.0.360",
     "@types/bun": "latest",
