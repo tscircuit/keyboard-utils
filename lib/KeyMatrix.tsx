@@ -44,7 +44,7 @@ export const KeyMatrix = ({
             key={key.name}
             pcbX={relX}
             pcbY={relY}
-            schX={35 + relX / 5} // Scale down for schematic view
+            schX={relX / 5} // Scale down for schematic view
             schY={relY / 7} // Scale down for schematic view
           >
             <Key name={key.name} />
