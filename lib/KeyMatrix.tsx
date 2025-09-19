@@ -2,7 +2,7 @@ import React from 'react';
 import { parseKLELayout } from "./KLELayout";
 import type { KLELayout } from "./KLELayout";
 import { A_1N4148WS } from "imports/A1N4148WS";
-import { Key } from "../Key";
+import { Key } from "../components/Key";
 
 interface KeyMatrixProps {
   layout: KLELayout
@@ -50,9 +50,11 @@ export const KeyMatrix = ({
         const hasRotation = firstKey.rotation !== 0
 
         if (hasRotation) {
-          // For rotated key groups (thumb clusters), position relative to rotation center
-          const rotationCenterX = firstKey.rotationX - (minX + maxX) / 2
-          const rotationCenterY = firstKey.rotationY - (minY + maxY) / 2
+          // For rotated key groups (thumb clusters), position at absolute rotation center
+          const keyboardCenterX = (minX + maxX) / 2
+          const keyboardCenterY = (minY + maxY) / 2
+          const rotationCenterX = firstKey.rotationX - keyboardCenterX
+          const rotationCenterY = firstKey.rotationY - keyboardCenterY
 
           return (
             <group

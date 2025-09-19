@@ -1,5 +1,5 @@
-import { KeyHotSocket } from "@tsci/seveibar.KeyHotSocket"
-import { KeyShaftForHotSocket } from "@tsci/seveibar.KeyShaftForHotSocket"
+import { KeyHotSocket } from "./KeyHotSocket"
+import { KeyShaftForHotSocket } from "./KeyShaftForHotSocket"
 
 export const Key = (props: {
   pcbX?: number

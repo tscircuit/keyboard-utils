@@ -48,6 +48,6 @@ describe("KeyMatrix", () => {
     expect(keys[1].name).toBe("K_SPACE");
     expect(keys[1].rotation).toBe(30);
     expect(keys[1].rotationX).toBe(2 * 19.05);
-    expect(keys[1].rotationY).toBe(2 * 19.05);
+    expect(keys[1].rotationY).toBe(-2 * 19.05);
   });
 });
