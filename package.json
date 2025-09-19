@@ -2,9 +2,11 @@
   "name": "@tsci/seveibar.keyboard-utils",
   "version": "0.0.15",
   "type": "module",
-  "scripts": {},
+  "scripts": {
+    "start": "tscircuit-cli dev index.tsx"
+  },
   "devDependencies": {
-    "@tscircuit/core": "^0.0.360",
+    "@tscircuit/core": "^0.0.741",
     "@types/bun": "latest",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
@@ -16,7 +18,5 @@
   "peerDependencies": {
     "typescript": "^5"
   },
-  "dependencies": {
-    "@tsci/seveibar.Key": "^0.0.1"
-  }
+  "dependencies": {}
 }
