@@ -1,5 +1,7 @@
 # keyboard-utils
 
+Utilities for creating keyboards with tscircuit
+
 To install dependencies:
 
 ```bash
