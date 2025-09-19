@@ -1,8 +1,8 @@
 import React from 'react';
 import { parseKLELayout } from "./KLELayout";
 import type { KLELayout } from "./KLELayout";
-import { Key } from "@tsci/seveibar.Key";
 import { A_1N4148WS } from "imports/A1N4148WS";
+import { Key } from "../components/Key";
 
 interface KeyMatrixProps {
   layout: KLELayout
@@ -32,40 +32,111 @@ export const KeyMatrix = ({
   const minY = Math.min(...keys.map((k) => k.y))
   const maxY = Math.max(...keys.map((k) => k.y + k.height))
 
+  // Group keys by rotation and rotation center
+  const keyGroups = new Map<string, typeof keys>()
+
+  keys.forEach(key => {
+    const groupKey = `${key.rotation}_${key.rotationX}_${key.rotationY}`
+    if (!keyGroups.has(groupKey)) {
+      keyGroups.set(groupKey, [])
+    }
+    keyGroups.get(groupKey)!.push(key)
+  })
+
   return (
     <group pcbX={pcbX} pcbY={pcbY} schX={schX} schY={schY}>
-      {keys.map((key, index) => {
-        // Calculate the relative position from the center of the keyboard
-        const relX = key.x - (minX + maxX) / 2
-        const relY = key.y - (minY + maxY) / 2
+      {Array.from(keyGroups.entries()).map(([groupKey, groupKeys]) => {
+        const firstKey = groupKeys[0]
+        const hasRotation = firstKey.rotation !== 0
 
-        return (
-          <group
-            key={key.name}
-            pcbX={relX}
-            pcbY={relY}
-            schX={relX / 5} // Scale down for schematic view
-            schY={relY / 7} // Scale down for schematic view
-          >
-            <Key name={key.name} />
-            {rowToMicroPin?.[key.row] !== undefined && (
-              <A_1N4148WS
-                name={`${key.name}_DIO`}
-                connections={{
-                  A: `.${key.name} .pin1`,
-                  C: rowToMicroPin[key.row],
-                }}
-                pcbX={0.5}
-                pcbY={-13.5}
-                schY={-1}
-                layer="bottom"
-              />
-            )}
-            {colToMicroPin?.[key.col] !== undefined && (
-              <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
-            )}
-          </group>
-        )
+        if (hasRotation) {
+          // For rotated key groups (thumb clusters), position at absolute rotation center
+          const keyboardCenterX = (minX + maxX) / 2
+          const keyboardCenterY = (minY + maxY) / 2
+          const rotationCenterX = firstKey.rotationX - keyboardCenterX
+          const rotationCenterY = firstKey.rotationY - keyboardCenterY
+
+          return (
+            <group
+              key={groupKey}
+              pcbX={rotationCenterX}
+              pcbY={rotationCenterY}
+              pcbRotation={firstKey.rotation}
+            >
+              {groupKeys.map((key) => {
+                // Position keys relative to their rotation center
+                const relX = key.x - key.rotationX
+                const relY = key.y - key.rotationY
+
+                return (
+                  <group
+                    key={key.name}
+                    pcbX={relX}
+                    pcbY={relY}
+                    schX={relX / 5}
+                    schY={relY / 7}
+                  >
+                    <Key name={key.name} />
+                    {rowToMicroPin?.[key.row] !== undefined && (
+                      <A_1N4148WS
+                        name={`${key.name}_DIO`}
+                        connections={{
+                          A: `.${key.name} .pin1`,
+                          C: rowToMicroPin[key.row],
+                        }}
+                        pcbX={0.5}
+                        pcbY={-13.5}
+                        schY={-1}
+                        layer="bottom"
+                      />
+                    )}
+                    {colToMicroPin?.[key.col] !== undefined && (
+                      <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
+                    )}
+                  </group>
+                )
+              })}
+            </group>
+          )
+        } else {
+          // For non-rotated key groups, position relative to keyboard center
+          return (
+            <group key={groupKey}>
+              {groupKeys.map((key) => {
+                const relX = key.x - (minX + maxX) / 2
+                const relY = key.y - (minY + maxY) / 2
+
+                return (
+                  <group
+                    key={key.name}
+                    pcbX={relX}
+                    pcbY={relY}
+                    schX={relX / 5}
+                    schY={relY / 7}
+                  >
+                    <Key name={key.name} />
+                    {rowToMicroPin?.[key.row] !== undefined && (
+                      <A_1N4148WS
+                        name={`${key.name}_DIO`}
+                        connections={{
+                          A: `.${key.name} .pin1`,
+                          C: rowToMicroPin[key.row],
+                        }}
+                        pcbX={0.5}
+                        pcbY={-13.5}
+                        schY={-1}
+                        layer="bottom"
+                      />
+                    )}
+                    {colToMicroPin?.[key.col] !== undefined && (
+                      <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
+                    )}
+                  </group>
+                )
+              })}
+            </group>
+          )
+        }
       })}
     </group>
   )
