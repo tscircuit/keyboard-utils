@@ -23,4 +23,31 @@ describe("KeyMatrix", () => {
     expect(keys[2].name).toBe("K_C");
     expect(keys[3].name).toBe("K_D");
   });
+
+  test("KeyMatrix handles rotated keys correctly for rendering", () => {
+    // Test that rotated keys in the layout have proper rotation values
+    // This ensures pcbRotation will be applied correctly in the KeyMatrix component
+
+    const layout = [
+      ["Q"], // Normal key with no rotation
+      [
+        { r: 30, rx: 2, ry: 2 },
+        "Space" // Rotated key
+      ]
+    ];
+
+    const keys = parseKLELayout(layout);
+
+    expect(keys.length).toBe(2);
+
+    // First key should have no rotation
+    expect(keys[0].name).toBe("K_Q");
+    expect(keys[0].rotation).toBe(0);
+
+    // Second key should have 30 degree rotation
+    expect(keys[1].name).toBe("K_SPACE");
+    expect(keys[1].rotation).toBe(30);
+    expect(keys[1].rotationX).toBe(2 * 19.05);
+    expect(keys[1].rotationY).toBe(2 * 19.05);
+  });
 });

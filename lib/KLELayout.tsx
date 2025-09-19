@@ -95,7 +95,7 @@ export const parseKLELayout = (layout: KLELayout) => {
             height: current.height * KEY_SIZE,
             rotation: current.rotation_angle,
             rotationX: current.rotation_x * KEY_SIZE,
-            rotationY: current.rotation_y * KEY_SIZE,
+            rotationY: -current.rotation_y * KEY_SIZE,
             row: r,
             col: colIndex,
           }
