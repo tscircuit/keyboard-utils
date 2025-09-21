@@ -1,6 +1,7 @@
 // Define the types for keyboard-layout-editor.com JSON format
 
 import { getRefDesForKey } from "./getRefDesForKey"
+import { assignRowColByPosition } from "./assignRowColByPosition"
 
 export type KLEKey =
   | string
@@ -145,5 +146,6 @@ export const parseKLELayout = (layout: KLELayout) => {
     current.x = current.rotation_x
   }
 
-  return keys
+  // Apply logical row/col assignment based on physical positions
+  return assignRowColByPosition(keys)
 }
