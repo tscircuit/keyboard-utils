@@ -14,7 +14,7 @@
     "circuit-to-svg": "^0.0.199",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tscircuit": "^0.0.660",
+    "tscircuit": "^0.0.1284",
     "tsup": "^8.4.0"
   },
   "peerDependencies": {
