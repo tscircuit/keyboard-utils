@@ -20,7 +20,11 @@ export const Key = (props: {
       schX={props.schX}
       schY={props.schY}
     >
-      <KeyHotSocket name={props.name} connections={props.connections} pcbRotation={props.pcbRotation} />
+      <KeyHotSocket
+        name={props.name}
+        connections={props.connections ?? {}}
+        pcbRotation={props.pcbRotation}
+      />
       <KeyShaftForHotSocket
         name={`${props.name}_shaft`}
         pcbX={0}

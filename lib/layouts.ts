@@ -1,8 +1,22 @@
 // biome-ignore lint: This file contains keyboard layout data
+import type { KLELayout } from "./KLELayout"
 
 // From: https://www.keyboard-layout-editor.com/#/
 
-export const layouts = {
+export const layouts: Record<
+  | "default60"
+  | "ansi104"
+  | "iso105"
+  | "iso60"
+  | "jd40"
+  | "ergodox"
+  | "atreus"
+  | "planck"
+  | "keycool84"
+  | "leopold_fc660m"
+  | "apple_wireless",
+  KLELayout
+> = {
   default60: [
     ["~\n`","!\n1","@\n2","#\n3","$\n4","%\n5","^\n6","&\n7","*\n8","(\n9",")\n0","_\n-","+\n=",{w:2},"Backspace"],
     [{w:1.5},"Tab","Q","W","E","R","T","Y","U","I","O","P","{\n[","}\n]",{w:1.5},"|\n\\"],

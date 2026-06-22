@@ -6,6 +6,7 @@ import { assignRowColByPosition } from "./assignRowColByPosition"
 export type KLEKey =
   | string
   | {
+      [key: string]: string | number | boolean | number[] | undefined
       x?: number
       y?: number
       w?: number
@@ -64,12 +65,15 @@ export const parseKLELayout = (layout: KLELayout) => {
 
   // Process each row
   for (let r = 0; r < layout.length; r++) {
-    if (layout[r] instanceof Array) {
+    const row = layout[r]
+
+    if (row instanceof Array) {
       let colIndex = 0
 
       // Process each item in the row
-      for (let k = 0; k < layout[r].length; k++) {
-        const item = layout[r][k]
+      for (let k = 0; k < row.length; k++) {
+        const item = row[k]
+        if (item === undefined) continue
 
         if (typeof item === 'string') {
           // This is a key

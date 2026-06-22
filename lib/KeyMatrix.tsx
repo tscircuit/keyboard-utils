@@ -27,6 +27,32 @@ export const KeyMatrix = ({
 }: KeyMatrixProps) => {
   const keys = parseKLELayout(layout)
 
+  const renderMatrixConnections = (key: (typeof keys)[number]) => {
+    const rowPin = rowToMicroPin?.[key.row]
+    const colPin = colToMicroPin?.[key.col]
+
+    return (
+      <>
+        {rowPin !== undefined && (
+          <A_1N4148WS
+            name={`${key.name}_DIO`}
+            connections={{
+              A: `.${key.name} .pin1`,
+              C: rowPin,
+            }}
+            pcbX={0.5}
+            pcbY={-13.5}
+            schY={-1}
+            layer="bottom"
+          />
+        )}
+        {colPin !== undefined && (
+          <trace from={`.${key.name} .pin2`} to={colPin} />
+        )}
+      </>
+    )
+  }
+
   const minX = Math.min(...keys.map((k) => k.x))
   const maxX = Math.max(...keys.map((k) => k.x + k.width))
   const minY = Math.min(...keys.map((k) => k.y))
@@ -47,6 +73,8 @@ export const KeyMatrix = ({
     <group pcbX={pcbX} pcbY={pcbY} schX={schX} schY={schY}>
       {Array.from(keyGroups.entries()).map(([groupKey, groupKeys]) => {
         const firstKey = groupKeys[0]
+        if (!firstKey) return null
+
         const hasRotation = firstKey.rotation !== 0
 
         if (hasRotation) {
@@ -77,22 +105,7 @@ export const KeyMatrix = ({
                     schY={relY / 7}
                   >
                     <Key name={key.name} />
-                    {rowToMicroPin?.[key.row] !== undefined && (
-                      <A_1N4148WS
-                        name={`${key.name}_DIO`}
-                        connections={{
-                          A: `.${key.name} .pin1`,
-                          C: rowToMicroPin[key.row],
-                        }}
-                        pcbX={0.5}
-                        pcbY={-13.5}
-                        schY={-1}
-                        layer="bottom"
-                      />
-                    )}
-                    {colToMicroPin?.[key.col] !== undefined && (
-                      <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
-                    )}
+                    {renderMatrixConnections(key)}
                   </group>
                 )
               })}
@@ -115,22 +128,7 @@ export const KeyMatrix = ({
                     schY={relY / 7}
                   >
                     <Key name={key.name} />
-                    {rowToMicroPin?.[key.row] !== undefined && (
-                      <A_1N4148WS
-                        name={`${key.name}_DIO`}
-                        connections={{
-                          A: `.${key.name} .pin1`,
-                          C: rowToMicroPin[key.row],
-                        }}
-                        pcbX={0.5}
-                        pcbY={-13.5}
-                        schY={-1}
-                        layer="bottom"
-                      />
-                    )}
-                    {colToMicroPin?.[key.col] !== undefined && (
-                      <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
-                    )}
+                    {renderMatrixConnections(key)}
                   </group>
                 )
               })}
