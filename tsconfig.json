@@ -28,7 +28,7 @@
     "noPropertyAccessFromIndexSignature": false,
     
     // Add type definitions for @tscircuit/core
-    "types": ["@tscircuit/core"]
+    "types": ["@tscircuit/core", "bun-types"]
   },
-  "include": ["lib/**/*", "tests/**/*"]
+  "include": ["components/**/*", "imports/**/*", "lib/**/*"]
 }
