@@ -91,7 +91,7 @@ const refDesMap = {
 export const getRefDesForKey = (key: string): string => {
   const normKeyLabels = key.toLowerCase().split("\n")
   for (const normKeyLabel of normKeyLabels) {
-    if (normKeyLabel in refDesMap) {
+    if (Object.hasOwn(refDesMap, normKeyLabel)) {
       return refDesMap[normKeyLabel as keyof typeof refDesMap]
     }
   }
