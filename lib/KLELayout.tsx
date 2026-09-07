@@ -61,6 +61,16 @@ export const parseKLELayout = (layout: KLELayout) => {
   let keyId = 0
 
   const nameCounters = new Map<string, number>()
+  const labelCounts = new Map<string, number>()
+  for (const row of layout) {
+    if (!Array.isArray(row)) continue
+    for (const item of row) {
+      if (typeof item !== "string") continue
+      const name = getRefDesForKey(item)
+      labelCounts.set(name, (labelCounts.get(name) ?? 0) + 1)
+    }
+  }
+  const usedNames = new Set<string>()
 
   // Process each row
   for (let r = 0; r < layout.length; r++) {
@@ -75,18 +85,15 @@ export const parseKLELayout = (layout: KLELayout) => {
           // This is a key
           let refDes = getRefDesForKey(item)
 
-          if (nameCounters.has(refDes)) {
-            // Edit the original item to include the counter (if it doesn't have it)
-            const ogKey = keys.find((k) => k.name === refDes)
-            if (ogKey) {
-              ogKey.name = `${refDes}${nameCounters.get(refDes)!}`
-            }
-
-            nameCounters.set(refDes, nameCounters.get(refDes)! + 1)
-            refDes = `${refDes}${nameCounters.get(refDes)!}`
-          } else {
-            nameCounters.set(refDes, 1)
+          if ((labelCounts.get(refDes) ?? 0) > 1) {
+            const baseName = refDes
+            let counter = nameCounters.get(baseName) ?? 0
+            do {
+              refDes = `${baseName}${++counter}`
+            } while (labelCounts.has(refDes) || usedNames.has(refDes))
+            nameCounters.set(baseName, counter)
           }
+          usedNames.add(refDes)
 
           const newKey = {
             name: refDes,
