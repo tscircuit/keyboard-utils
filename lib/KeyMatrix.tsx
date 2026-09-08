@@ -27,10 +27,31 @@ export const KeyMatrix = ({
 }: KeyMatrixProps) => {
   const keys = parseKLELayout(layout)
 
-  const minX = Math.min(...keys.map((k) => k.x))
-  const maxX = Math.max(...keys.map((k) => k.x + k.width))
-  const minY = Math.min(...keys.map((k) => k.y))
-  const maxY = Math.max(...keys.map((k) => k.y + k.height))
+  let minX = Infinity
+  let maxX = -Infinity
+  let minY = Infinity
+  let maxY = -Infinity
+
+  for (const key of keys) {
+    const angle = key.rotation * Math.PI / 180
+    const cos = Math.cos(angle)
+    const sin = Math.sin(angle)
+    for (const dx of [-key.width / 2, key.width / 2]) {
+      for (const dy of [-key.height / 2, key.height / 2]) {
+        const localX = key.x + dx - key.rotationX
+        const localY = key.y + dy - key.rotationY
+        const x = key.rotationX + localX * cos - localY * sin
+        const y = key.rotationY + localX * sin + localY * cos
+        minX = Math.min(minX, x)
+        maxX = Math.max(maxX, x)
+        minY = Math.min(minY, y)
+        maxY = Math.max(maxY, y)
+      }
+    }
+  }
+
+  const keyboardCenterX = keys.length ? (minX + maxX) / 2 : 0
+  const keyboardCenterY = keys.length ? (minY + maxY) / 2 : 0
 
   // Group keys by rotation and rotation center
   const keyGroups = new Map<string, typeof keys>()
@@ -51,8 +72,6 @@ export const KeyMatrix = ({
 
         if (hasRotation) {
           // For rotated key groups (thumb clusters), position at absolute rotation center
-          const keyboardCenterX = (minX + maxX) / 2
-          const keyboardCenterY = (minY + maxY) / 2
           const rotationCenterX = firstKey.rotationX - keyboardCenterX
           const rotationCenterY = firstKey.rotationY - keyboardCenterY
 
@@ -103,8 +122,8 @@ export const KeyMatrix = ({
           return (
             <group key={groupKey}>
               {groupKeys.map((key) => {
-                const relX = key.x - (minX + maxX) / 2
-                const relY = key.y - (minY + maxY) / 2
+                const relX = key.x - keyboardCenterX
+                const relY = key.y - keyboardCenterY
 
                 return (
                   <group
