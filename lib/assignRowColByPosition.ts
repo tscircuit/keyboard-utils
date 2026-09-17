@@ -58,7 +58,7 @@ export function assignRowColByPosition(keys: Array<{
   });
 
   // Remap right side columns to continue after left side
-  const maxLeftCol = Math.max(...leftMainKeys.map(k => k.col));
+  const maxLeftCol = Math.max(-1, ...leftMainKeys.map(k => k.col));
   rightMainKeys.forEach(key => {
     const rightIndex = rightCols.indexOf(key.col);
     key.col = maxLeftCol + 1 + rightIndex;
@@ -73,14 +73,14 @@ export function assignRowColByPosition(keys: Array<{
   rightThumbKeys.sort((a, b) => a.y - b.y || a.x - b.x);
 
   // Assign thumb cluster rows (starting after main key rows)
-  const maxMainRow = Math.max(...allMainKeys.map(k => k.row));
+  const maxMainRow = Math.max(-1, ...allMainKeys.map(k => k.row));
 
   leftThumbKeys.forEach((key, index) => {
     key.row = maxMainRow + 1 + Math.floor(index / 3);
     key.col = index % 3;
   });
 
-  const maxLeftThumbCol = Math.max(...leftMainKeys.map(k => k.col));
+  const maxLeftThumbCol = Math.max(-1, ...leftMainKeys.map(k => k.col), ...leftThumbKeys.map(k => k.col));
   rightThumbKeys.forEach((key, index) => {
     key.row = maxMainRow + 1 + Math.floor(index / 3);
     key.col = maxLeftThumbCol + 1 + (index % 3);

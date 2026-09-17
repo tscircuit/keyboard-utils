@@ -72,43 +72,45 @@ export const parseKLELayout = (layout: KLELayout) => {
         const item = layout[r][k]
 
         if (typeof item === 'string') {
-          // This is a key
-          let refDes = getRefDesForKey(item)
+          // Decals affect layout geometry but do not represent physical keys.
+          if (!current.decal) {
+            let refDes = getRefDesForKey(item)
 
-          if (nameCounters.has(refDes)) {
-            // Edit the original item to include the counter (if it doesn't have it)
-            const ogKey = keys.find((k) => k.name === refDes)
-            if (ogKey) {
-              ogKey.name = `${refDes}${nameCounters.get(refDes)!}`
+            if (nameCounters.has(refDes)) {
+              // Edit the original item to include the counter (if it doesn't have it)
+              const ogKey = keys.find((k) => k.name === refDes)
+              if (ogKey) {
+                ogKey.name = `${refDes}${nameCounters.get(refDes)!}`
+              }
+
+              nameCounters.set(refDes, nameCounters.get(refDes)! + 1)
+              refDes = `${refDes}${nameCounters.get(refDes)!}`
+            } else {
+              nameCounters.set(refDes, 1)
             }
 
-            nameCounters.set(refDes, nameCounters.get(refDes)! + 1)
-            refDes = `${refDes}${nameCounters.get(refDes)!}`
-          } else {
-            nameCounters.set(refDes, 1)
-          }
+            const newKey = {
+              name: refDes,
+              x: (current.x + current.width / 2) * KEY_SIZE,
+              y: -(current.y + current.height / 2) * KEY_SIZE,
+              width: current.width * KEY_SIZE,
+              height: current.height * KEY_SIZE,
+              rotation: current.rotation_angle,
+              rotationX: current.rotation_x * KEY_SIZE,
+              rotationY: -current.rotation_y * KEY_SIZE,
+              row: r,
+              col: colIndex,
+            }
 
-          const newKey = {
-            name: refDes,
-            x: (current.x + current.width / 2) * KEY_SIZE,
-            y: -(current.y + current.height / 2) * KEY_SIZE,
-            width: current.width * KEY_SIZE,
-            height: current.height * KEY_SIZE,
-            rotation: current.rotation_angle,
-            rotationX: current.rotation_x * KEY_SIZE,
-            rotationY: -current.rotation_y * KEY_SIZE,
-            row: r,
-            col: colIndex,
+            keys.push(newKey)
+            colIndex++
           }
-
-          keys.push(newKey)
 
           // Set up for the next key (from KLE logic)
           current.x += current.width
           current.width = current.height = 1
           current.x2 = current.y2 = current.width2 = current.height2 = 0
           current.nub = current.stepped = current.decal = false
-          colIndex++
 
         } else {
           // This is a property object
@@ -135,6 +137,7 @@ export const parseKLELayout = (layout: KLELayout) => {
           if (item.y) { current.y += item.y }
           if (item.w) { current.width = current.width2 = item.w }
           if (item.h) { current.height = current.height2 = item.h }
+          if (item?.d != null) { current.decal = item.d }
           // ... other properties would go here
         }
       }
