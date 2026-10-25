@@ -88,6 +88,32 @@ const refDesMap = {
   y: "K_Y",
   z: "K_Z",
 }
+
+// Additional legends used by the bundled layouts. Entity names are case-sensitive:
+// &dArr; and &darr; represent different arrows in the Planck layout.
+const kleRefDesMap = new Map([
+  ["scroll lock", "K_SCROLL_LOCK"],
+  ["num lock", "K_NUM_LOCK"],
+  ["back space", "K_BACKSPACE"],
+  ["Back<br>Space", "K_BACKSPACE"],
+  ["page up", "K_PGUP"],
+  ["page down", "K_PGDN"],
+  ["`", "K_BACKQUOTE"],
+  [",", "K_COMMA"],
+  [".", "K_PERIOD"],
+  ["↑", "K_ARROW_UP"],
+  ["↓", "K_ARROW_DOWN"],
+  ["←", "K_ARROW_LEFT"],
+  ["→", "K_ARROW_RIGHT"],
+  ["&uarr;", "K_ARROW_UP"],
+  ["&darr;", "K_ARROW_DOWN"],
+  ["&larr;", "K_ARROW_LEFT"],
+  ["&rarr;", "K_ARROW_RIGHT"],
+  ["&uArr;", "K_DOUBLE_ARROW_UP"],
+  ["&dArr;", "K_DOUBLE_ARROW_DOWN"],
+  ["<i class='fa fa-eject'></i>", "K_EJECT"],
+])
+
 export const getRefDesForKey = (key: string): string => {
   const normKeyLabels = key.toLowerCase().split("\n")
   for (const normKeyLabel of normKeyLabels) {
@@ -98,8 +124,19 @@ export const getRefDesForKey = (key: string): string => {
   if (key === "") {
     return "K_SPACE"
   }
-  if (key.match(/^[a-zA-Z0-9]+$/)) {
-    return `K_${key.toUpperCase()}`
+  // Keep all existing mapped legends ahead of these fallbacks, even when a
+  // preceding legend is alphanumeric (for example, "F1\n!").
+  for (const label of key.split("\n")) {
+    // Only plain text aliases are case-insensitive. HTML and entity spellings
+    // must exactly match a bundled legend rather than changing their meaning.
+    const textAlias = /^[a-z ]+$/i.test(label)
+      ? kleRefDesMap.get(label.toLowerCase())
+      : undefined
+    const refDes = kleRefDesMap.get(label) ?? textAlias
+    if (refDes) return refDes
+    if (label.match(/^[a-zA-Z0-9]+$/)) {
+      return `K_${label.toUpperCase()}`
+    }
   }
   throw new Error(`No defined refDes for key "${key}"`)
 }
