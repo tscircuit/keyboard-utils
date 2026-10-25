@@ -44,7 +44,7 @@ export const KeyMatrix = ({
   })
 
   return (
-    <group pcbX={pcbX} pcbY={pcbY} schX={schX} schY={schY}>
+    <group name={name} pcbX={pcbX} pcbY={pcbY} schX={schX} schY={schY}>
       {Array.from(keyGroups.entries()).map(([groupKey, groupKeys]) => {
         const firstKey = groupKeys[0]
         const hasRotation = firstKey.rotation !== 0
