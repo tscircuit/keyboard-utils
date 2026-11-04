@@ -56,12 +56,13 @@ export const KeyMatrix = ({
           const rotationCenterX = firstKey.rotationX - keyboardCenterX
           const rotationCenterY = firstKey.rotationY - keyboardCenterY
 
+          // KLE uses Y-down coordinates; reflecting Y reverses rotation.
           return (
             <group
               key={groupKey}
               pcbX={rotationCenterX}
               pcbY={rotationCenterY}
-              pcbRotation={firstKey.rotation}
+              pcbRotation={-firstKey.rotation}
             >
               {groupKeys.map((key) => {
                 // Position keys relative to their rotation center
