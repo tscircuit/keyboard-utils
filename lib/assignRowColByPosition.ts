@@ -26,10 +26,17 @@ export function assignRowColByPosition(keys: Array<{
     // Create a position-based grid
     const GRID_SIZE = 19.05; // Standard key unit size
 
+    function roundToGrid(position: number) {
+      const lower = Math.floor(position / GRID_SIZE);
+      // Compare in millimeters: 3.5 * GRID_SIZE / GRID_SIZE can be just below
+      // 3.5. Reconstructing the midpoint preserves ties without an epsilon.
+      return position < (lower + 0.5) * GRID_SIZE ? lower : lower + 1;
+    }
+
     keys.forEach(key => {
       // Calculate grid position based on physical coordinates
-      const gridRow = Math.round(-key.y / GRID_SIZE); // Negative y because y increases downward
-      const gridCol = Math.round(key.x / GRID_SIZE);
+      const gridRow = roundToGrid(-key.y); // Negative y because y increases downward
+      const gridCol = roundToGrid(key.x);
 
       key.row = gridRow;
       key.col = isRightSide ? gridCol : gridCol; // Keep original columns for now
